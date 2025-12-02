@@ -9,7 +9,7 @@ pipeline {
   }
 
   tools {
-    maven 'M2_Home'
+    maven 'M2_HOME'
     jdk 'JAVA_HOME'
   }
 

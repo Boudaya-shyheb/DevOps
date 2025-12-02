@@ -30,6 +30,11 @@ public class DepartmentController {
         return departmentService.saveDepartment(department);
     }
 
+    @DeleteMapping
+    public void deleteAllDepartements(){
+        departmentService.getAllDepartments();
+    }
+
     @DeleteMapping("/deleteDepartment/{id}")
     public void deleteDepartment(@PathVariable Long id) {
       departmentService.deleteDepartment(id); }

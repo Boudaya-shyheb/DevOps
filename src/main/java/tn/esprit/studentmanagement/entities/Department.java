@@ -16,6 +16,7 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDepartment;
     private String name;
+    private String description;
     private String location;
     private String phone;
     private String head; // chef de département

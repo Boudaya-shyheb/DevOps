@@ -1,30 +1,44 @@
-
 pipeline {
-  agent any
+    agent any
 
-  
-  tools {
-    jdk 'JAVA_HOME'
-    maven 'M2_HOME'
-  }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/boudaya-shyheb/DevOps.git'
+            }
+        }
 
-  stages {
-    stage('GIT') {
-      steps {
-        git branch: 'main', url: 'https://github.com/Boudaya-shyheb/tn-foyer.git'
-      }
+        stage('Clean & Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t boudayashyheb/alpine:1.0.0"
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'shyheb', passwordVariable: 'Shyheb123*')]) {
+                        sh """
+                            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                            docker push boudayashyheb/alpine:1.0.0
+                        """
+                    }
+                }
+            }
+        }
     }
 
-    stage('Compile Stage') {
-      steps {
-        // -B pour build non-interactif
-        sh 'mvn -B clean compile'
-      }
+    post {
+        always {
+            echo "Pipeline terminée"
+        }
     }
-  }
-
-  post {
-    success { echo 'Compile succeeded' }
-    failure { echo 'Compile failed' }
-  }
 }

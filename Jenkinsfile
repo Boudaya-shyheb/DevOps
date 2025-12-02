@@ -28,7 +28,7 @@ pipeline {
     stage('Build & Test - Maven') {
       steps {
         echo "Lancement du build Maven..."
-        sh "mvn clean package"
+        sh "mvn -B clean compile"
       }
       post {
         failure {

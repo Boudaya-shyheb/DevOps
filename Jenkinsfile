@@ -5,7 +5,6 @@ pipeline {
     DOCKER_CREDENTIALS_ID = 'docker-hub-creds'
     DOCKER_REPO = 'boudayashyheb/alpine'
     DOCKER_TAG = '1.0.0'
-    MVN_CMD = 'mvn -B -T 1C clean verify'
   }
 
   tools {
@@ -43,7 +42,7 @@ pipeline {
           IMAGE_TAG_LATEST = "${env.DOCKER_REPO}:${env.DOCKER_TAG}"
           IMAGE_TAG_COMMIT = "${env.DOCKER_REPO}:${env.DOCKER_TAG}-${env.GIT_COMMIT_SHORT}"
           echo "Build docker image ${IMAGE_TAG_LATEST} and ${IMAGE_TAG_COMMIT}"
-          sh "docker build -t ${IMAGE_TAG_LATEST} -t ${IMAGE_TAG_COMMIT} ."
+          sh "docker build -f docker/Dockerfile -t ${IMAGE_TAG_LATEST} -t ${IMAGE_TAG_COMMIT} ."
         }
       }
     }

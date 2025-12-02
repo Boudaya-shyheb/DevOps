@@ -47,16 +47,30 @@ pipeline {
       }
     }
 
-    stage('Push Docker Image') {
+    stage('Build & Push Docker (CLI)') {
       steps {
-          script {
-          docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_CREDENTIALS_ID) {
-            sh "docker push ${env.DOCKER_REPO}:${env.DOCKER_TAG}"
-            sh "docker push ${env.DOCKER_REPO}:${env.DOCKER_TAG}-${env.GIT_COMMIT_SHORT}"
+        script {
+          def shortSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+          def image = "${env.DOCKER_REPO}:${env.DOCKER_TAG}"
+          def imageCommit = "${env.DOCKER_REPO}:${env.DOCKER_TAG}-${shortSha}"
+
+          sh "docker build -f /home/chiheb/docker/Dockerfile -t ${image} -t ${imageCommit} ."
+
+          withCredentials([usernamePassword(credentialsId: 'docker-hub-creds',
+                                            usernameVariable: 'shyheb',
+                                            passwordVariable: 'Shyheb123*')]) {
+
+            sh 'echo "$DOCKER_PWD" | docker login -u "$DOCKER_USER" --password-stdin'
+
+            sh "docker push ${image}"
+            sh "docker push ${imageCommit}"
+
+            sh 'docker logout || true'
           }
         }
       }
     }
+
   }
 
   post {

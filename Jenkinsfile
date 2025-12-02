@@ -42,7 +42,7 @@ pipeline {
           IMAGE_TAG_LATEST = "${env.DOCKER_REPO}:${env.DOCKER_TAG}"
           IMAGE_TAG_COMMIT = "${env.DOCKER_REPO}:${env.DOCKER_TAG}-${env.GIT_COMMIT_SHORT}"
           echo "Build docker image ${IMAGE_TAG_LATEST} and ${IMAGE_TAG_COMMIT}"
-          sh "docker build -f -f /home/chiheb/docker/Dockerfile -t ${IMAGE_TAG_COMMIT} ."
+          sh "docker build -f /home/chiheb/docker/Dockerfile -t ${IMAGE_TAG_LATEST} -t ${IMAGE_TAG_COMMIT} ."
         }
       }
     }

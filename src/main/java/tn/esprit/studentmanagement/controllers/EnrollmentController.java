@@ -31,9 +31,4 @@ public class EnrollmentController {
     public void deleteEnrollment(@PathVariable Long id) {
         enrollmentService.deleteEnrollment(id); }
 
-    @GetMapping("/jibKolChay")
-    public void getAll(){
-        System.out.println("jib kol chay");
-    }
-
 }

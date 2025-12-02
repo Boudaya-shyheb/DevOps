@@ -37,12 +37,6 @@ pipeline {
       }
     }
 
-    stage('Archive Artifact') {
-      steps {
-        archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-      }
-    }
-
     stage('Build Docker Image') {
       steps {
         script {

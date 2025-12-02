@@ -60,7 +60,7 @@ pipeline {
                                             usernameVariable: 'shyheb',
                                             passwordVariable: 'Shyheb123*')]) {
 
-            sh 'echo "$DOCKER_PWD" | docker login -u "$DOCKER_USER" --password-stdin'
+            sh 'echo "$DOCKER_PWD" | docker login -u shyheb --password-stdin'
 
             sh "docker push ${image}"
             sh "docker push ${imageCommit}"

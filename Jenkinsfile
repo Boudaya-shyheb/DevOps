@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        pollSCM('H/2 * * * *')   // ➜ Détecte automatiquement les nouveaux commits
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -17,7 +21,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t boudayashyheb/alpine:1.0.0"
+                    sh "docker build -t boudayashyheb/alpine:1.0.0 ."
                 }
             }
         }
@@ -25,7 +29,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'shyheb', passwordVariable: 'Shyheb123*')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh """
                             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                             docker push boudayashyheb/alpine:1.0.0

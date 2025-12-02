@@ -16,8 +16,9 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCourse;
     private String name;
+    private String department;
     private String code;           // exemple : CS101
-    private int credit;            // nombre de crédits
+    private int credit;// nombre de crédits
     private String description;
 
     @OneToMany(mappedBy = "course")
